@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Venta</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f9f9f9;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #e5e5e7;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .nav-container {
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 24px;
+            padding-top: 70px;
+            background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            max-width: 320px;
+            margin-bottom: 55px;
+        }
+
+        .cta-button {
+            padding: 18px 40px;
+            background: #111;
+            color: white;
+            font-size: 17.5px;
+            font-weight: 600;
+            border-radius: 9999px;
+            cursor: pointer;
+        }
+
+        .section {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+            padding-bottom: 100px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 28px;
+            padding: 24px 22px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-image img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .badge {
+            background: #111;
+            color: white;
+            font-size: 13.5px;
+            padding: 8px 20px;
+            border-radius: 999px;
+            display: inline-block;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+
+        .title { font-size: 21.5px; font-weight: 700; margin-bottom: 12px; }
+        .desc { font-size: 15.5px; color: #666; margin-bottom: 20px; line-height: 1.55; }
+
+        .price { font-size: 28px; font-weight: 700; }
+        .old-price { font-size: 17px; color: #999; text-decoration: line-through; margin-left: 10px; }
+
+        button.main {
+            width: 100%;
+            padding: 18px;
+            margin-top: 25px;
+            background: #111;
+            color: white;
+            border: none;
+            border-radius: 999px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        /* Términos y Condiciones - Sección completa */
+        .terms {
+            margin-top: 50px;
+            padding: 25px;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            font-size: 14px;
+            color: #444;
+        }
+
+        .terms h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111;
+        }
+
+        .terms h4 {
+            font-size: 15.5px;
+            margin: 18px 0 8px;
+            color: #222;
+        }
+
+        .terms p, .terms li {
+            margin-bottom: 10px;
+        }
+
+        .terms ul {
+            padding-left: 20px;
+        }
+
+        /* Menú inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #ffffff;
+            border-top: 1px solid #e5e5e7;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .bottom-nav-container {
+            max-width: 440px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8e8e93;
+            font-size: 12.5px;
+            font-weight: 500;
+        }
+
+        .nav-item.active { color: #111; }
+        .nav-item span { font-size: 27px; margin-bottom: 4px; }
+
+        /* Notificación */
+        .custom-alert {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 30, 30, 0.96);
+            color: white;
+            padding: 28px 24px;
+            border-radius: 22px;
+            width: 88%;
+            max-width: 340px;
+            text-align: center;
+            z-index: 2000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            display: none;
+        }
+
+        .custom-alert.show { display: block; }
+        .custom-alert .emoji { font-size: 42px; margin-bottom: 12px; }
+        .custom-alert button {
+            margin-top: 22px;
+            background: #111;
+            color: white;
+            border: none;
+            padding: 14px 36px;
+            border-radius: 999px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Pixel Venta</div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero" class="hero">
+        <h1>Las mejores ofertas,<br>sin perder tiempo</h1>
+        <p>Seleccionamos solo productos con descuento real que valen la pena.</p>
+        <div onclick="goToInicio()" class="cta-button">Explorar ofertas</div>
+    </section>
+
+    <!-- SECCIÓN INICIO -->
+    <section id="inicio" class="section">
+        <div class="container">
+            <h2 class="section-title">Pixel Venta</h2>
+
+            <div class="card">
+                <div class="product-image">
+                    <img src="https://http2.mlstatic.com/D_Q_NP_2X_860014-MLA99506822128_112025-T.webp" 
+                         alt="Anker Soundcore P20i">
+                </div>
+
+                <div class="badge">OFERTA LIMITADA</div>
+                <div class="title">Audífonos Bluetooth Anker Soundcore P20i - Azul</div>
+                <div class="desc">
+                    30 horas de batería total • Bajos potentes<br>
+                    Bluetooth 5.3 • IPX5 resistente al agua • Micrófono con IA
+                </div>
+                <div>
+                    <span class="price">$399 MXN</span>
+                    <span class="old-price">$699 MXN</span>
+                </div>
+
+                <a href="https://meli.la/1H5Lyyg" target="_blank" style="text-decoration:none;">
+                    <button class="main">Ver oferta en Mercado Libre →</button>
+                </a>
+            </div>
+
+            <!-- TÉRMINOS Y CONDICIONES COMPLETOS -->
+            <div class="terms">
+                <h3>Términos y Condiciones de Uso</h3>
+                <p><strong>Última actualización:</strong> Marzo 2026</p>
+
+                <h4>1. Información General</h4>
+                <p>Pixel Venta es un sitio web de recomendaciones y enlaces de afiliados de Mercado Libre. No somos una tienda en línea ni vendemos productos directamente.</p>
+
+                <h4>2. Programa de Afiliados</h4>
+                <p>Los enlaces presentes en esta página son enlaces de afiliado de Mercado Libre. Si realizas una compra a través de ellos, Pixel Venta puede recibir una comisión por parte de Mercado Libre, **sin costo adicional para ti**.</p>
+
+                <h4>3. Responsabilidad</h4>
+                <p>
+                    Toda la información sobre precios, disponibilidad, características y stock de los productos es administrada exclusivamente por Mercado Libre y sus vendedores. 
+                    Pixel Venta no se hace responsable por cambios de precio, falta de stock, problemas con el envío, calidad del producto o cualquier inconveniente derivado de la transacción.
+                </p>
+
+                <h4>4. Uso del Sitio</h4>
+                <p>El usuario se compromete a utilizar esta página de forma legal y responsable. Queda prohibido cualquier uso indebido, duplicación de contenido o intento de fraude.</p>
+
+                <h4>5. Propiedad Intelectual</h4>
+                <p>Los textos, imágenes y diseño de esta página son propiedad de Pixel Venta o tienen licencia para su uso. Queda prohibida su reproducción total o parcial sin autorización.</p>
+
+                <h4>6. Limitación de Responsabilidad</h4>
+                <p>Pixel Venta no garantiza la disponibilidad permanente del sitio ni se hace responsable por daños indirectos derivados del uso de esta página.</p>
+
+                <h4>7. Ley Aplicable</h4>
+                <p>Estos Términos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia será resuelta ante los tribunales competentes de León, Guanajuato.</p>
+
+                <p style="margin-top: 20px; font-size: 13px; color: #777;">
+                    Al usar este sitio aceptas estos Términos y Condiciones. Si no estás de acuerdo, te pedimos que no utilices los enlaces de afiliado.
+                </p>
+            </div>
+
+            <div style="text-align:center; color:#777; font-size:14px; margin-top:40px;">
+                Gracias por tu confianza ❤️
+            </div>
+        </div>
+    </section>
+
+    <!-- MENÚ INFERIOR (mismo de antes) -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-container">
+            <a href="#" onclick="goToInicio(); return false;" class="nav-item active" id="nav-inicio">
+                <span>🏠</span>
+                Inicio
+            </a>
+            <a href="#" onclick="showCategorias(); return false;" class="nav-item" id="nav-categorias">
+                <span>📁</span>
+                Categorías
+            </a>
+            <a href="#" onclick="showMas(); return false;" class="nav-item" id="nav-mas">
+                <span>⋯</span>
+                Más
+            </a>
+        </div>
+    </div>
+
+    <!-- Notificación (mismo de antes) -->
+    <div id="customAlert" class="custom-alert">
+        <div id="alertEmoji" class="emoji"></div>
+        <div id="alertText" style="font-size: 16.5px; line-height: 1.5;"></div>
+        <button onclick="closeAlert()">Aceptar</button>
+    </div>
+
+    <script>
+        // Funciones del menú y notificación (igual que antes)
+        function goToInicio() {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('inicio').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('nav-inicio').classList.add('active');
+        }
+
+        function showCategorias() {
+            document.getElementById('alertEmoji').textContent = '📂';
+            showCustomAlert("Próximamente podrás explorar por categorías:<br><strong>Audífonos • Celulares • Hogar • Accesorios</strong> y más.");
+            updateActiveNav('nav-categorias');
+        }
+
+        function showMas() {
+            document.getElementById('alertEmoji').textContent = '✨';
+            showCustomAlert("Próximamente más opciones:<br>Recomendaciones personalizadas, ofertas flash y tutoriales.");
+            updateActiveNav('nav-mas');
+        }
+
+        function showCustomAlert(message) {
+            document.getElementById('alertText').innerHTML = message;
+            document.getElementById('customAlert').classList.add('show');
+        }
+
+        function closeAlert() {
+            document.getElementById('customAlert').classList.remove('show');
+        }
+
+        function updateActiveNav(id) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        window.onload = () => {
+            document.getElementById('inicio').classList.remove('active');
+        };
+    </script>
+</body>
+</html>
